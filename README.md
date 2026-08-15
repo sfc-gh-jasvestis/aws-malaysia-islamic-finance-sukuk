@@ -10,7 +10,6 @@ Malaysia dominates the global Sukuk market with 51% market share. A leading Isla
 flowchart LR
     S3[S3 Data Landing] --> SP[Snowpipe]
     KIN[Kinesis] --> SPS[Snowpipe Streaming]
-    SP --> RAW[RAW Tables]
     SPS --> RAW
     RAW --> DT[Dynamic Tables]
     DT --> ML[ML Functions]
