@@ -115,7 +115,7 @@ Industry research and Snowflake customer outcomes:
 - **Malaysia held 51% of global Sukuk outstanding (US$539B) in 2023** — [Securities Commission Malaysia](https://www.sc.com.my/development/islamic-capital-market)
 - **Malaysia's Islamic fund management industry grew 12.8% YoY to RM 250B AUM** — [MIFC](https://www.mifc.com/)
 - **Real-time portfolio analytics reduces risk reporting latency from days to minutes** — [McKinsey Asset Management](https://www.mckinsey.com/industries/financial-services/our-insights)
-- **Open data formats (Iceberg) reduce cross-institution data sharing costs by 60-80%** — [Snowflake](https://www.snowflake.com/en/data-cloud/apache-iceberg/)
+- **Western Union** (Snowflake customer): processes 1B+ cross-border transactions on Snowflake with real-time compliance monitoring across 200+ countries -- [snowflake.com/customers/western-union](https://www.snowflake.com/en/customers/all-customers/case-study/western-union/)
 
 
 ## Key Demo Numbers
