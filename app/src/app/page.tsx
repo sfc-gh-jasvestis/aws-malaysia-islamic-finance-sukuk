@@ -7,6 +7,7 @@ import { Chart } from '@/components/Chart';
 import { DataTable } from '@/components/DataTable';
 import { AskAI } from '@/components/AskAI';
 import { ActionMemo } from '@/components/ActionMemo';
+import { GeoMap } from '@/components/GeoMap';
 
 interface DemoNarrative {
   title: string;
@@ -40,9 +41,22 @@ export default function HomePage() {
         <KPICard title="Avg Yield" value="3.8%" status="neutral" />
         <KPICard title="Active Issuers" value="84" status="neutral" />
       </div>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-1">
+          <GeoMap
+            country="malaysia"
+            markers={[{"label": "Kuala Lumpur", "value": "Islamic finance hub", "color": "blue", "size": "lg"}, {"label": "Penang", "value": "Regional branch", "color": "green", "size": "md"}, {"label": "Johor Bahru", "value": "Southern ops", "color": "green", "size": "md"}, {"label": "Kota Kinabalu", "value": "E.Malaysia branch", "color": "green", "size": "sm"}]}
+            routes={[]}
+            title="Geographic Overview"
+            height={280}
+          />
+        </div>
+        <div className="lg:col-span-2 grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-4 grid-cols-1">
         <Chart data={data?.timeseries || [{ period: 'Loading', value: 0 }]} type="line" xKey="period" yKeys={[{ key: 'value', name: 'RM B' }]} title="Sukuk Issuance Volume (Monthly)" />
         <Chart data={data?.categories || [{ category: 'Loading', count: 0 }]} type="bar" xKey="category" yKeys={[{ key: 'count', name: 'RM B' }]} title="Outstanding by Structure" />
+      </div>
+        </div>
       </div>
       <DataTable columns={[
           { key: 'id', header: '#' },
