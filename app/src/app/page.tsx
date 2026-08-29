@@ -74,7 +74,7 @@ export default function HomePage() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Chart data={data?.breakdown || [{ label: 'A', value: 30 }, { label: 'B', value: 70 }]} type="pie" xKey="label" yKeys={[{ key: 'value', name: 'RM B' }]} title="Upcoming Issuances" />
-        <ActionMemo persona={{ name: 'Dato' Zainal Izlan', role: 'Head of Islamic Capital Markets' }} context={{}} onGenerate={async () => ({ subject: 'Action Required', body: 'AI-generated recommendation based on current data.', urgency: 'HIGH', actions: ['Prepare GII pricing documentation', 'Review PLUS sustainability sukuk', 'Update SC ESG sukuk reporting'] })} />
+        <ActionMemo persona={{ name: 'Dato Zainal Izlan', role: 'Head of Islamic Capital Markets' }} context={{}} onGenerate={async () => ({ subject: 'Action Required', body: 'AI-generated recommendation based on current data.', urgency: 'HIGH', actions: ['Prepare GII pricing documentation', 'Review PLUS sustainability sukuk', 'Update SC ESG sukuk reporting'] })} />
       </div>
     </div>
   );
