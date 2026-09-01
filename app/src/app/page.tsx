@@ -32,15 +32,23 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+
+  // Look up a KPI value returned by /api/data (sourced from CURATED.KPI_SUMMARY).
+  // Falls back to the original literal so the card still renders if the API,
+  // or KPI_SUMMARY, is unavailable.
+  const kpiVal = (title: string, fallback: string): string =>
+    (data?.kpiCards as { title: string; value: string }[] | undefined)
+      ?.find((k) => k.title === title)?.value ?? fallback;
+
   const title = narrative?.title || 'SEA AWS Demo';
 
   const executiveCockpit = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Outstanding Sukuk" value="RM 1.2T" status="neutral" />
-        <KPICard title="New Issuance (YTD)" value="RM 184B" status="neutral" />
-        <KPICard title="Avg Yield" value="3.8%" status="neutral" />
-        <KPICard title="Active Issuers" value="84" status="neutral" />
+        <KPICard title="Outstanding Sukuk" value={kpiVal('Outstanding Sukuk', 'RM 1.2T')} status="neutral" />
+        <KPICard title="New Issuance (YTD)" value={kpiVal('New Issuance (YTD)', 'RM 184B')} status="neutral" />
+        <KPICard title="Avg Yield" value={kpiVal('Avg Yield', '3.8%')} status="neutral" />
+        <KPICard title="Active Issuers" value={kpiVal('Active Issuers', '84')} status="neutral" />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="lg:col-span-1">
@@ -63,9 +71,9 @@ export default function HomePage() {
   const domainTab1 = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <KPICard title="Foreign Holdings" value="24%" />
-        <KPICard title="Avg Tenor" value="5.4 yrs" />
-        <KPICard title="Spread vs MGS" value="+42 bps" />
+        <KPICard title="Foreign Holdings" value={kpiVal('Foreign Holdings', '24%')} />
+        <KPICard title="Avg Tenor" value={kpiVal('Avg Tenor', '5.4 yrs')} />
+        <KPICard title="Spread vs MGS" value={kpiVal('Spread vs MGS', '+42 bps')} />
       </div>
       <Chart data={data?.detail || [{ x: 'Mon', y: 24 }, { x: 'Tue', y: 28 }, { x: 'Wed', y: 22 }, { x: 'Thu', y: 31 }, { x: 'Fri', y: 26 }, { x: 'Sat', y: 19 }, { x: 'Sun', y: 23 }]} type="area" xKey="x" yKeys={[{ key: 'y', name: 'Yield %' }]} title="Sukuk Yield Curve" height={400} />
     </div>
