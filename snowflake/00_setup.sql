@@ -1,16 +1,13 @@
--- ============================================================================
--- Sukuk Portfolio Analytics
--- Real-time Sukuk portfolio management for Malaysia's world-leading Islamic capital market — Dynamic Tables build portfolio views, Iceberg enables cross-institution analysis, and Cortex Analyst answers portfolio questions.
--- ============================================================================
-USE ROLE ACCOUNTADMIN;
-CREATE DATABASE IF NOT EXISTS ISLAMIC_SUKUK_PORTFOLIO;
-CREATE WAREHOUSE IF NOT EXISTS SUKUK_WH WAREHOUSE_SIZE = 'MEDIUM' AUTO_SUSPEND = 120 AUTO_RESUME = TRUE;
-USE DATABASE ISLAMIC_SUKUK_PORTFOLIO;
-CREATE SCHEMA IF NOT EXISTS RAW;
-CREATE SCHEMA IF NOT EXISTS CURATED;
-CREATE SCHEMA IF NOT EXISTS ML;
-CREATE SCHEMA IF NOT EXISTS AI;
-CREATE SCHEMA IF NOT EXISTS SEARCH;
-CREATE SCHEMA IF NOT EXISTS APP;
+-- Generated from generator/demo_specs/aws-malaysia-islamic-finance-sukuk.json
+-- Regenerate with: python3 generator/gen_repo_docs.py aws-malaysia-islamic-finance-sukuk
+-- This is the schema that is actually deployed for MY_ISLAMIC_FINANCE_SUKUK.
 
-USE WAREHOUSE SUKUK_WH;
+-- MY_ISLAMIC_FINANCE_SUKUK  (Sukuk Portfolio Analytics)
+-- generated from generator/demo_specs/aws-malaysia-islamic-finance-sukuk.json - do not hand-edit
+CREATE DATABASE IF NOT EXISTS MY_ISLAMIC_FINANCE_SUKUK;
+CREATE SCHEMA IF NOT EXISTS MY_ISLAMIC_FINANCE_SUKUK.RAW;
+CREATE SCHEMA IF NOT EXISTS MY_ISLAMIC_FINANCE_SUKUK.CURATED;
+CREATE SCHEMA IF NOT EXISTS MY_ISLAMIC_FINANCE_SUKUK.APP;
+USE DATABASE MY_ISLAMIC_FINANCE_SUKUK;
+
+-- 5 real regions; entity names carry their region so the two always agree
