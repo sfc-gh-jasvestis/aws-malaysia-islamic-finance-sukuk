@@ -53,6 +53,7 @@ export default function HomePage() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="lg:col-span-1">
           <GeoMap country="malaysia"
+            labels={{ entity: 'Issuers', event: 'Market Data', alert: 'Limit Breaches' }}
             regions={data?.regions} markers={[{"label": "Penang", "value": "Fab: util 92%", "color": "green", "size": "lg"}, {"label": "Kuala Lumpur", "value": "HQ", "color": "blue", "size": "md"}, {"label": "Johor Bahru", "value": "Southern ops", "color": "green", "size": "md"}]} routes={[]} title="Geographic Overview" height={400} />
         </div>
         <div className="lg:col-span-1 grid grid-cols-1 gap-4">
@@ -63,9 +64,14 @@ export default function HomePage() {
       <DataTable columns={[
           { key: 'id', header: '#' },
           { key: 'name', header: 'Issuer' },
+          { key: 'region', header: 'Region' },
           { key: 'status', header: 'Rating' },
-          { key: 'value', header: 'Amount (RM B)' },
-      ]} data={data?.entities || []} title="Recent Sukuk Issuances" />
+          { key: 'm1', header: 'Amount (RM B)' },
+          { key: 'm2', header: 'Foreign Holdings' },
+          { key: 'm3', header: 'Tenor' },
+          { key: 'events', header: 'Market Data' },
+          { key: 'alerts', header: 'Limit Breaches' },
+        ]} data={data?.entities || []} title="Recent Sukuk Issuances" />
     </div>
   );
 
