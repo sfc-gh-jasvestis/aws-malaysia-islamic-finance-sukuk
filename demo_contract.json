@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "repo": "aws-malaysia-islamic-finance-sukuk",
+  "operation": "on-demand",
+  "data_classification": "synthetic demonstration only",
+  "currency": "MYR",
+  "grains": {
+    "RAW.HOLDINGS": "one row per sukuk holding (one sukuk series serviced by one fictional custodian)",
+    "RAW.HOLDING_DAILY": "one row per holding per day (90 days)",
+    "RAW.HOLDING_DOCUMENTS": "one row per holding (holding file document snapshot)",
+    "CURATED.PERFORMANCE_SUMMARY": "one row per holding",
+    "CURATED.TREND_ANALYSIS": "one row per day",
+    "CURATED.BREAK_SUMMARY": "one row per break reason",
+    "CURATED.KPI_SUMMARY": "one row per KPI",
+    "ML.ESCALATION_RISK_SCORES": "one row per holding (latest day)"
+  },
+  "metrics": {
+    "Settlement Match Rate": "100 * (SUM(SETTLEMENT_COUNT) - SUM(BREAK_COUNT)) / SUM(SETTLEMENT_COUNT)",
+    "Settlement Breaks": "SUM(BREAK_COUNT)",
+    "Escalated to Custodian Investigation": "SUM(ESCALATED_COUNT)",
+    "Escalation Rate": "100 * SUM(ESCALATED_COUNT) / SUM(BREAK_COUNT)",
+    "Resolution SLA Breaches": "SUM(SLA_BREACHED)",
+    "Settled Value (MYR B)": "SUM(VALUE_MYR) / 1e9",
+    "Instructions Processed": "SUM(SETTLEMENT_COUNT)",
+    "Position Reconciliation Compliance": "100 * SUM(RECON_COMPLETED) / SUM(RECON_DUE)",
+    "Holdings Monitored": "COUNT(RAW.HOLDINGS)",
+    "Holding File Coverage": "100 * SUM(LEAST(ON_FILE_QTY, REQUIRED_QTY)) / SUM(REQUIRED_QTY)",
+    "Holding Documents Pending": "SUM(PENDING_QTY)"
+  },
+  "chart_bindings": {
+    "daily_breaks": ["CURATED.TREND_ANALYSIS.METRIC_DATE", "BREAK_COUNT", "ESCALATED_COUNT"],
+    "breaks_by_reason": ["CURATED.BREAK_SUMMARY.BREAK_REASON", "BREAK_COUNT", "ESCALATED_COUNT"],
+    "recon_compliance_vs_escalated": ["CURATED.PERFORMANCE_SUMMARY.RECON_COMPLIANCE_PCT", "ESCALATED_COUNT"],
+    "quicksight_escalation_risk": ["ENTITY_ID", "MAX(ESCALATION_PROB_7D)"]
+  },
+  "freshness": "MAX(EVENT_DATE) is an observation watermark; requestedAt is not freshness",
+  "required_capabilities": {
+    "core_pipeline": "Curated KPIs reconcile to a RAW recomputation (run_core.py checks this on every build)",
+    "escalation_risk_model": "Snowflake ML CLASSIFICATION of P(a settlement break on the holding is escalated to custodian investigation in the next 7 days), evaluated on an out-of-time holdout",
+    "forecast_and_anomaly": "14-day portfolio-wide settlement-break FORECAST; auto-match failure rate ANOMALY_DETECTION (train 75 days, detect last 15)",
+    "search": "Cortex Search SEARCH.BREAK_SOP_SEARCH over synthetic break-handling SOPs (one per sukuk type and break reason)",
+    "semantic_analytics": "Semantic view APP.SUKUK_ANALYTICS and Cortex Agent APP.SUKUK_AGENT using analyst + search tools",
+    "grounded_ai": "Agent answers return generated SQL and SOP citations; the action memo uses only KPI, holding, break-reason and risk rows",
+    "quicksight": "DIRECT_QUERY dashboard (holdings, daily settlement breaks, escalations by holding, escalation risk, settlement events loaded) through a read-only Snowflake service user",
+    "quicksight_q": "Amazon Q topic over the curated datasets for natural-language questions",
+    "aws_ingestion": "Amazon Data Firehose -> S3 -> Snowpipe AUTO_INGEST into RAW.LIVE_SETTLEMENTS",
+    "notifications": "APP.LIVE_BREAK_ALERT logs new BREAK events to APP.ALERT_LOG and emails via SYSTEM$SEND_EMAIL; alert and tasks suspended between demos",
+    "orchestration": "Task graph APP.TASK_REFRESH_CURATED -> APP.TASK_RESCORE_RISK run on demand (EXECUTE TASK)",
+    "app_deployment": "SPCS service APP.MY_ISLAMIC_FINANCE_SUKUK_APP; routes /api/data, /api/ask, /api/agent"
+  },
+  "builds": {
+    "snowflake": {
+      "database": "MALAYSIA_ISLAMIC_FINANCE_SUKUK_SNOWFLAKE",
+      "app_setting": "DEMO_PLATFORM=snowflake",
+      "live_settlements": "APP.SIMULATE_SETTLEMENTS(n)",
+      "memo": "Cortex AI_COMPLETE (claude-sonnet-4-5)"
+    },
+    "aws": {
+      "database": "MALAYSIA_ISLAMIC_FINANCE_SUKUK_AWS",
+      "app_setting": "DEMO_PLATFORM=aws",
+      "live_settlements": "Amazon Data Firehose -> S3 -> Snowpipe",
+      "memo": "Amazon Bedrock Claude Sonnet 4.5 via APP.BEDROCK_GENERATE",
+      "capabilities": "see required_capabilities"
+    }
+  }
+}
